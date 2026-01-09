@@ -1,3 +1,4 @@
+import 'package:aceui/aceui.dart';
 import 'package:flutter/material.dart';
 
 class AceAlertPopup extends StatelessWidget {
@@ -15,7 +16,7 @@ class AceAlertPopup extends StatelessWidget {
     this.btnText,
     this.onPressed,
     this.color,
-    this.icon,  
+    this.icon,
   });
 
   @override
@@ -23,97 +24,55 @@ class AceAlertPopup extends StatelessWidget {
     // Default color using the project's blue theme
     final primaryColor = color ?? const Color.fromARGB(255, 56, 92, 221);
 
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: Stack(
-        alignment: Alignment.center,
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      height: 200,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Content Container
-          Container(
-            padding: const EdgeInsets.only(
-              left: 20,
-              top: 45 + 20, // Padding for the avatar
-              right: 20,
-              bottom: 20,
-            ),
-            margin: const EdgeInsets.only(top: 45), // Margin for the avatar
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, 10),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  message,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 22),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      elevation: 0,
-                    ),
-                    onPressed: onPressed ?? () => Navigator.of(context).pop(),
-                    child: Text(
-                      btnText ?? "OK",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          // Top Icon
-          Positioned(
-            top: 0,
-            child: CircleAvatar(
-              backgroundColor: primaryColor,
-              radius: 45,
-              child: Icon(
-                icon ?? Icons.info_outline,
-                size: 50,
-                color: Colors.white,
-              ),
-            ),
+          const SizedBox(height: 10),
+          Text(message),
+          const SizedBox(height: 15),
+          AceButton(
+            color: primaryColor,
+            colorText: Colors.white,
+            label: btnText ?? "OK",
+            onPressed: onPressed,
           ),
         ],
       ),
+    );
+  }
+
+  /// Helper method to show the popup
+  static Future<void> show(
+    BuildContext context, {
+    required String title,
+    required String message,
+    String? btnText,
+    VoidCallback? onPressed,
+    Color? color,
+    IconData? icon,
+  }) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (context) {
+        return AceAlertPopup(
+          title: title,
+          message: message,
+          btnText: btnText,
+          onPressed: onPressed,
+          color: color,
+          icon: icon,
+        );
+      },
     );
   }
 }
