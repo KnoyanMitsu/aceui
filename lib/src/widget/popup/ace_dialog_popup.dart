@@ -8,6 +8,7 @@ class AceAlertPopup extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? color;
   final IconData? icon;
+  final bool? isCancel;
 
   const AceAlertPopup({
     super.key,
@@ -17,6 +18,7 @@ class AceAlertPopup extends StatelessWidget {
     this.onPressed,
     this.color,
     this.icon,
+    this.isCancel,
   });
 
   @override
@@ -38,11 +40,24 @@ class AceAlertPopup extends StatelessWidget {
           const SizedBox(height: 10),
           Text(message),
           const SizedBox(height: 15),
-          AceButton(
-            color: primaryColor,
-            colorText: Colors.white,
-            label: btnText ?? "OK",
-            onPressed: onPressed,
+          Row(
+            children: [
+              AceButton(
+                color: primaryColor,
+                colorText: Colors.white,
+                label: btnText ?? "OK",
+                onPressed: onPressed,
+              ),
+              if (isCancel == true)
+                AceButton(
+                  color: primaryColor,
+                  colorText: Colors.white,
+                  label: "Cancel",
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+            ],
           ),
         ],
       ),
@@ -58,6 +73,7 @@ class AceAlertPopup extends StatelessWidget {
     VoidCallback? onPressed,
     Color? color,
     IconData? icon,
+    bool? isCancel,
   }) {
     return showModalBottomSheet(
       context: context,
@@ -71,6 +87,7 @@ class AceAlertPopup extends StatelessWidget {
           onPressed: onPressed,
           color: color,
           icon: icon,
+          isCancel: isCancel,
         );
       },
     );
