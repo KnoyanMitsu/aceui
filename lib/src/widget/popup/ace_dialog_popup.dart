@@ -72,7 +72,6 @@ class AceAlertPopup extends StatelessWidget {
     String? btnText,
     VoidCallback? onPressed,
     Color? color,
-    IconData? icon,
     bool? isCancel,
   }) {
     return showModalBottomSheet(
@@ -86,7 +85,6 @@ class AceAlertPopup extends StatelessWidget {
           btnText: btnText,
           onPressed: onPressed,
           color: color,
-          icon: icon,
           isCancel: isCancel,
         );
       },
