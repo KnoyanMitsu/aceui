@@ -38,15 +38,15 @@ class AceAlertPopup extends StatelessWidget {
           const SizedBox(height: 10),
           Text(message),
           const SizedBox(height: 15),
-          Row(
-            children: [
-              AceButton(
-                color: primaryColor,
-                colorText: Colors.white,
-                label: btnText ?? "OK",
-                onPressed: onPressed,
-              ),
-              if (isCancel == true)
+          if (isCancel == true) ...[
+            Row(
+              children: [
+                AceButton(
+                  color: primaryColor,
+                  colorText: Colors.white,
+                  label: btnText ?? "OK",
+                  onPressed: onPressed,
+                ),
                 AceButton(
                   color: primaryColor,
                   colorText: Colors.white,
@@ -55,8 +55,16 @@ class AceAlertPopup extends StatelessWidget {
                     Navigator.pop(context);
                   },
                 ),
-            ],
-          ),
+              ],
+            ),
+          ] else ...[
+            AceButton(
+              color: primaryColor,
+              colorText: Colors.white,
+              label: btnText ?? "OK",
+              onPressed: onPressed,
+            ),
+          ],
         ],
       ),
     );
