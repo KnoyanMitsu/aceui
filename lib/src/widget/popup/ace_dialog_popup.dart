@@ -7,8 +7,7 @@ class AceAlertPopup extends StatelessWidget {
   final String? btnText;
   final VoidCallback? onPressed;
   final Color? color;
-  final IconData? icon;
-  final bool? isCancel;
+  final bool isCancel;
 
   const AceAlertPopup({
     super.key,
@@ -17,8 +16,7 @@ class AceAlertPopup extends StatelessWidget {
     this.btnText,
     this.onPressed,
     this.color,
-    this.icon,
-    this.isCancel,
+    required this.isCancel,
   });
 
   @override
@@ -72,7 +70,7 @@ class AceAlertPopup extends StatelessWidget {
     String? btnText,
     VoidCallback? onPressed,
     Color? color,
-    bool? isCancel,
+    required bool isCancel,
   }) {
     return showModalBottomSheet(
       context: context,
