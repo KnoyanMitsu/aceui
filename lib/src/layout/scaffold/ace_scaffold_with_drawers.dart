@@ -106,52 +106,57 @@ class _AceScaffoldWithDrawersState extends State<AceScaffoldWithDrawers>
           AnimatedBuilder(
             animation: _controller,
             builder: (context, child) {
-              return GestureDetector(
-                // 1. LOGIKA SLIDE (DRAG)
-                behavior: HitTestBehavior.translucent, // <--- 1. Tambah ini
+              double xOffset = _controller.value * _maxWidth;
+              double currentRadius =
+                  widget.borderRadius * _controller.value; // Animasi radius
 
-                onHorizontalDragUpdate: (details) {
-                  // 2. Tambahkan Sensitivitas
-                  // Kadang delta di HP High DPI sangat kecil, jadi kita validasi
-                  if (details.primaryDelta == null) return;
+              // 1. TRANSFORM PINDAH KE SINI
+              return Transform(
+                transform: Matrix4.identity()..translate(xOffset, 0, 0),
+                alignment: Alignment.centerLeft,
 
-                  double delta = details.primaryDelta! / _maxWidth;
-
-                  // Opsional: Cek arah agar tidak "overshoot" (geser kebablasan)
-                  // Jika sudah tertutup (value 0), jangan biarkan geser ke kiri (negatif)
-                  if (_controller.value == 0 && delta < 0) return;
-                  // Jika sudah terbuka (value 1), jangan biarkan geser ke kanan (positif)
-                  if (_controller.value == 1 && delta > 0) return;
-
-                  _controller.value += delta;
-                },
-
-                onHorizontalDragEnd: (details) {
-                  // Logika snap tetap sama, velocity 300 biasanya cukup aman untuk HP
-                  if (details.primaryVelocity! > 300) {
-                    _openDrawer();
-                  } else if (details.primaryVelocity! < -300) {
-                    _closeDrawer();
-                  } else {
-                    if (_controller.value > 0.5) {
-                      _openDrawer();
+                // 2. GESTURE DETECTOR DI DALAM TRANSFORM
+                // Karena dibungkus Transform, area sentuh gesture ini ikut pindah ke kanan.
+                // Area kiri jadi bolong -> Klik tembus ke Layer 1 (Menu)
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onHorizontalDragUpdate: (details) {
+                    if (details.primaryDelta == null) return;
+                    _controller.value += details.primaryDelta! / _maxWidth;
+                  },
+                  onHorizontalDragEnd: (details) {
+                    if (details.primaryVelocity! > 300) {
+                      _controller.forward();
+                    } else if (details.primaryVelocity! < -300) {
+                      _controller.reverse();
                     } else {
-                      _closeDrawer();
+                      if (_controller.value > 0.5)
+                        _controller.forward();
+                      else
+                        _controller.reverse();
                     }
-                  }
-                },
+                  },
+                  // Tap menutup drawer HANYA jika drawer terbuka
+                  onTap: _controller.isDismissed ? null : _controller.reverse,
 
-                onTap: _controller.isDismissed ? null : _closeDrawer,
-                // Child: ScaffoldSession Anda
-                child: ScaffoldSession(
-                  controller: _controller,
-                  maxWidth: _maxWidth,
-                  body: widget.body,
-                  title: widget.titlePage,
-                  backgroundColor: widget.backgroundColor,
-                  borderRadius: widget.borderRadius,
-                  bodyColor: widget.bodyColor,
-                  onPressed: _toggleDrawer,
+                  // Panggil ScaffoldSession yang sudah bersih
+                  child: ScaffoldSession(
+                    // controller: _controller, // Sudah tidak butuh controller
+                    // maxWidth: _maxWidth,     // Tidak butuh
+                    body: widget.body,
+                    title: widget.titlePage,
+                    backgroundColor: widget.backgroundColor,
+                    bodyColor: widget.bodyColor,
+                    // Kita bisa passing radius dinamis dari sini
+                    borderRadius: currentRadius,
+                    // Pass fungsi toggle ke tombol hamburger
+                    onPressed: () {
+                      if (_controller.isDismissed)
+                        _controller.forward();
+                      else
+                        _controller.reverse();
+                    },
+                  ),
                 ),
               );
             },
