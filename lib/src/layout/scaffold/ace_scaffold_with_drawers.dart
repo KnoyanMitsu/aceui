@@ -62,6 +62,7 @@ class _AceScaffoldWithDrawersState extends State<AceScaffoldWithDrawers>
     }
   }
 
+  bool _canDrag = false;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -107,38 +108,55 @@ class _AceScaffoldWithDrawersState extends State<AceScaffoldWithDrawers>
             animation: _controller,
             builder: (context, child) {
               double xOffset = _controller.value * _maxWidth;
-              double currentRadius =
-                  widget.borderRadius * _controller.value; // Animasi radius
-
-              // 1. TRANSFORM PINDAH KE SINI
+              double currentRadius = widget.borderRadius * _controller.value;
               return Transform(
                 transform: Matrix4.identity()..translate(xOffset, 0, 0),
                 alignment: Alignment.centerLeft,
 
-                // 2. GESTURE DETECTOR DI DALAM TRANSFORM
-                // Karena dibungkus Transform, area sentuh gesture ini ikut pindah ke kanan.
-                // Area kiri jadi bolong -> Klik tembus ke Layer 1 (Menu)
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
+
+                  // 2. LOGIKA AWAL SENTUHAN (START)
+                  onHorizontalDragStart: (details) {
+                    bool isClosed = _controller.isDismissed;
+
+                    // ATURAN:
+                    // Kalau menu tertutup, cek posisi jari (dx).
+                    // Jika jari ada di area > 60 pixel dari kiri, JANGAN BOLEHKAN DRAG.
+                    if (isClosed && details.globalPosition.dx > 60) {
+                      _canDrag = false;
+                    } else {
+                      _canDrag = true;
+                    }
+                  },
+
+                  // 3. LOGIKA UPDATE (CEK _canDrag)
                   onHorizontalDragUpdate: (details) {
+                    // Kalau dilarang drag, stop di sini. Biarkan ListView yang ambil alih.
+                    if (!_canDrag) return;
+
                     if (details.primaryDelta == null) return;
                     _controller.value += details.primaryDelta! / _maxWidth;
                   },
+
+                  // 4. LOGIKA SELESAI (END)
                   onHorizontalDragEnd: (details) {
+                    // Kalau tadi gak boleh drag, jangan lakukan apa-apa
+                    if (!_canDrag) return;
+
                     if (details.primaryVelocity! > 300) {
-                      _controller.forward();
+                      _openDrawer();
                     } else if (details.primaryVelocity! < -300) {
-                      _controller.reverse();
+                      _closeDrawer();
                     } else {
                       if (_controller.value > 0.5)
-                        _controller.forward();
+                        _openDrawer();
                       else
-                        _controller.reverse();
+                        _closeDrawer();
                     }
                   },
-                  // Tap menutup drawer HANYA jika drawer terbuka
-                  onTap: _controller.isDismissed ? null : _controller.reverse,
 
+                  onTap: _controller.isDismissed ? null : _closeDrawer,
                   // Panggil ScaffoldSession yang sudah bersih
                   child: ScaffoldSession(
                     // controller: _controller, // Sudah tidak butuh controller
