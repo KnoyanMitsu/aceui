@@ -10,6 +10,7 @@ class ScaffoldSession extends StatefulWidget {
     this.backgroundColor,
     this.bodyColor,
     required this.borderRadius,
+    required this.onPressed,
   });
 
   final AnimationController controller;
@@ -19,12 +20,15 @@ class ScaffoldSession extends StatefulWidget {
   final Color? backgroundColor;
   final Color? bodyColor;
   final double borderRadius;
+  final VoidCallback onPressed;
 
   @override
   State<ScaffoldSession> createState() => _ScaffoldSessionState();
 }
 
+
 class _ScaffoldSessionState extends State<ScaffoldSession> {
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -48,11 +52,7 @@ class _ScaffoldSessionState extends State<ScaffoldSession> {
           leading: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              if (widget.controller.isDismissed) {
-                widget.controller.forward();
-              } else {
-                widget.controller.reverse();
-              }
+
             },
           ),
         ),

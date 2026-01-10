@@ -46,6 +46,22 @@ class _AceScaffoldWithDrawersState extends State<AceScaffoldWithDrawers>
     super.dispose();
   }
 
+  void _closeDrawer() {
+    _controller.reverse();
+  }
+
+  void _openDrawer() {
+    _controller.forward();
+  }
+
+  void _toggleDrawer() {
+    if (_controller.isDismissed) {
+      _openDrawer();
+    } else {
+      _closeDrawer();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -87,14 +103,56 @@ class _AceScaffoldWithDrawersState extends State<AceScaffoldWithDrawers>
             ),
           ),
 
-          ScaffoldSession(
-            controller: _controller,
-            maxWidth: _maxWidth,
-            body: widget.body,
-            title: widget.titlePage,
-            backgroundColor: widget.backgroundColor,
-            borderRadius: widget.borderRadius,
-            bodyColor: widget.bodyColor,
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return GestureDetector(
+                // 1. LOGIKA SLIDE (DRAG)
+                onHorizontalDragUpdate: (details) {
+                  // Menghitung persentase geser berdasarkan lebar maksimal
+                  // details.primaryDelta positif = geser kanan
+                  // details.primaryDelta negatif = geser kiri
+                  double delta = details.primaryDelta! / _maxWidth;
+                  _controller.value += delta;
+                },
+
+                // 2. LOGIKA SNAP (LEPAS JARI)
+                onHorizontalDragEnd: (details) {
+                  // Jika user menggeser cepat (Velocity)
+                  if (details.primaryVelocity! > 300) {
+                    _openDrawer(); // Swipe cepat ke kanan -> Buka
+                  } else if (details.primaryVelocity! < -300) {
+                    _closeDrawer(); // Swipe cepat ke kiri -> Tutup
+                  }
+                  // Jika user menggeser pelan, cek posisi
+                  else {
+                    if (_controller.value > 0.5) {
+                      _openDrawer(); // Sudah lewat setengah -> Buka full
+                    } else {
+                      _closeDrawer(); // Belum lewat setengah -> Tutup balik
+                    }
+                  }
+                },
+
+                // 3. LOGIKA TAP TO CLOSE
+                // Jika drawer terbuka (value > 0), tap akan menutup drawer.
+                // Jika drawer tertutup (value == 0), onTap bernilai null
+                // agar klik tembus ke tombol di dalam body.
+                onTap: _controller.isDismissed ? null : _closeDrawer,
+
+                // Child: ScaffoldSession Anda
+                child: ScaffoldSession(
+                  controller: _controller,
+                  maxWidth: _maxWidth,
+                  body: widget.body,
+                  title: widget.titlePage,
+                  backgroundColor: widget.backgroundColor,
+                  borderRadius: widget.borderRadius,
+                  bodyColor: widget.bodyColor,
+                  onPressed: _toggleDrawer,
+                ),
+              );
+            },
           ),
         ],
       ),
