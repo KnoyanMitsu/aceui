@@ -108,38 +108,40 @@ class _AceScaffoldWithDrawersState extends State<AceScaffoldWithDrawers>
             builder: (context, child) {
               return GestureDetector(
                 // 1. LOGIKA SLIDE (DRAG)
+                behavior: HitTestBehavior.translucent, // <--- 1. Tambah ini
+
                 onHorizontalDragUpdate: (details) {
-                  // Menghitung persentase geser berdasarkan lebar maksimal
-                  // details.primaryDelta positif = geser kanan
-                  // details.primaryDelta negatif = geser kiri
+                  // 2. Tambahkan Sensitivitas
+                  // Kadang delta di HP High DPI sangat kecil, jadi kita validasi
+                  if (details.primaryDelta == null) return;
+
                   double delta = details.primaryDelta! / _maxWidth;
+
+                  // Opsional: Cek arah agar tidak "overshoot" (geser kebablasan)
+                  // Jika sudah tertutup (value 0), jangan biarkan geser ke kiri (negatif)
+                  if (_controller.value == 0 && delta < 0) return;
+                  // Jika sudah terbuka (value 1), jangan biarkan geser ke kanan (positif)
+                  if (_controller.value == 1 && delta > 0) return;
+
                   _controller.value += delta;
                 },
 
-                // 2. LOGIKA SNAP (LEPAS JARI)
                 onHorizontalDragEnd: (details) {
-                  // Jika user menggeser cepat (Velocity)
+                  // Logika snap tetap sama, velocity 300 biasanya cukup aman untuk HP
                   if (details.primaryVelocity! > 300) {
-                    _openDrawer(); // Swipe cepat ke kanan -> Buka
+                    _openDrawer();
                   } else if (details.primaryVelocity! < -300) {
-                    _closeDrawer(); // Swipe cepat ke kiri -> Tutup
-                  }
-                  // Jika user menggeser pelan, cek posisi
-                  else {
+                    _closeDrawer();
+                  } else {
                     if (_controller.value > 0.5) {
-                      _openDrawer(); // Sudah lewat setengah -> Buka full
+                      _openDrawer();
                     } else {
-                      _closeDrawer(); // Belum lewat setengah -> Tutup balik
+                      _closeDrawer();
                     }
                   }
                 },
 
-                // 3. LOGIKA TAP TO CLOSE
-                // Jika drawer terbuka (value > 0), tap akan menutup drawer.
-                // Jika drawer tertutup (value == 0), onTap bernilai null
-                // agar klik tembus ke tombol di dalam body.
                 onTap: _controller.isDismissed ? null : _closeDrawer,
-
                 // Child: ScaffoldSession Anda
                 child: ScaffoldSession(
                   controller: _controller,
