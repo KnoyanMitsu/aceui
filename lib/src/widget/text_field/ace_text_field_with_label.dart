@@ -10,6 +10,7 @@ class AceTextFieldWithLabel extends StatefulWidget {
   final String? Function(String?)? validator;
   final List<String>? dropdownItems;
   final int? maxLine;
+  final bool border;
 
   const AceTextFieldWithLabel({
     super.key,
@@ -20,6 +21,7 @@ class AceTextFieldWithLabel extends StatefulWidget {
     this.validator,
     this.dropdownItems,
     this.maxLine,
+    this.border = true,
   });
 
   @override
@@ -116,11 +118,21 @@ class _AceTextFieldWithLabelState extends State<AceTextFieldWithLabel> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  label: Text(widget.label),
-                  suffixIcon: suffixIcon,
-                ),
+                decoration: switch(widget.border){
+                  true => InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    label: Text(widget.label),
+                  ),
+                  false => InputDecoration(
+                    border: InputBorder.none,
+                    label: Text(widget.label),
+                    suffixIcon: suffixIcon,
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                  ),
+                }
               )
             : DropdownButtonFormField<String>(
                 value: (widget.controller?.text.isNotEmpty ?? false)
