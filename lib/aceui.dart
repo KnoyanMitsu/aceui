@@ -8,3 +8,4 @@ export 'src/widget/popup/ace_dialog_popup.dart';
 export 'src/layout/ace_from_without_scarfold.dart';
 export 'src/layout/scaffold/ace_scaffold_with_drawers.dart';
 export 'src/widget/button/ace_listtiles.dart';
+export 'src/layout/ace_simple_layout.dart';
