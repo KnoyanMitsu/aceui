@@ -117,9 +117,7 @@ class _AceTextFieldWithLabelState extends State<AceTextFieldWithLabel> {
                   return null;
                 },
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+                  border: InputBorder.none,
                   label: Text(widget.label),
                   suffixIcon: suffixIcon,
                 ),
