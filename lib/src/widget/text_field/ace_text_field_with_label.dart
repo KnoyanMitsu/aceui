@@ -122,8 +122,8 @@ class _AceTextFieldWithLabelState extends State<AceTextFieldWithLabel> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: switch (widget.border) {
-                      true => BorderSide(width: 0, style: BorderStyle.none),
-                      false => BorderSide(width: 1, style: BorderStyle.solid),
+                      false => BorderSide(width: 0, style: BorderStyle.none),
+                      true => BorderSide(width: 1, style: BorderStyle.solid),
                     },
                   ),
                   label: Text(widget.label),
