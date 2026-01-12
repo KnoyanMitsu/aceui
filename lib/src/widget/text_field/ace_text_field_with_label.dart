@@ -118,21 +118,16 @@ class _AceTextFieldWithLabelState extends State<AceTextFieldWithLabel> {
                   }
                   return null;
                 },
-                decoration: switch(widget.border){
-                  true => InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    label: Text(widget.label),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(width: 0, style: BorderStyle.none),
                   ),
-                  false => InputDecoration(
-                    border: InputBorder.none,
-                    label: Text(widget.label),
-                    suffixIcon: suffixIcon,
-                    filled: true,
-                    fillColor: Colors.grey.shade200,
-                  ),
-                }
+                  label: Text(widget.label),
+                  suffixIcon: suffixIcon,
+                  filled: true,
+                  fillColor: Colors.grey.shade200,
+                ),
               )
             : DropdownButtonFormField<String>(
                 value: (widget.controller?.text.isNotEmpty ?? false)
