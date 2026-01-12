@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AceSimpleLayout extends StatelessWidget {
-  const AceSimpleLayout({super.key, required this.childern, required this.title});
+  const AceSimpleLayout({
+    super.key,
+    required this.childern,
+    required this.title,
+  });
 
   final List<Widget> childern;
   final String title;
@@ -25,9 +29,8 @@ class AceSimpleLayout extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         child: Column(
-          children: [
-            ...childern,
-          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [...childern],
         ),
       ),
     );
