@@ -88,8 +88,6 @@ class _AceTextFieldWithLabelState extends State<AceTextFieldWithLabel> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.label),
-        SizedBox(height: 5),
         widget.type != TypeField.dropdown
             ? TextFormField(
                 controller: widget.controller,
