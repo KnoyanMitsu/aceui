@@ -11,6 +11,7 @@ class AceTextFieldWithLabel extends StatefulWidget {
   final List<String>? dropdownItems;
   final int? maxLine;
   final bool border;
+  final Color? fillColor;
 
   const AceTextFieldWithLabel({
     super.key,
@@ -21,6 +22,7 @@ class AceTextFieldWithLabel extends StatefulWidget {
     this.validator,
     this.dropdownItems,
     this.maxLine,
+    this.fillColor,
     this.border = true,
   });
 
@@ -129,7 +131,7 @@ class _AceTextFieldWithLabelState extends State<AceTextFieldWithLabel> {
                   label: Text(widget.label),
                   suffixIcon: suffixIcon,
                   filled: true,
-                  fillColor: Colors.grey.shade200,
+                  fillColor: widget.fillColor,
                 ),
               )
             : DropdownButtonFormField<String>(
