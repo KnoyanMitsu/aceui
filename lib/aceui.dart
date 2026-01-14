@@ -10,3 +10,6 @@ export 'src/layout/scaffold/ace_scaffold_with_drawers.dart';
 export 'src/widget/button/ace_listtiles.dart';
 export 'src/layout/ace_simple_layout.dart';
 export 'src/layout/ace_simple_layout_without_scarf.dart';
+export 'src/widget/misc/ace_four_upload_photo.dart';
+export 'src/widget/misc/ace_pill_count.dart';
+export 'src/widget/misc/ace_card.dart';
