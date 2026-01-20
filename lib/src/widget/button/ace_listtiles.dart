@@ -41,9 +41,7 @@ class AceListTiles extends StatelessWidget {
           // --- LOGIKA TAP AREA ---
           // Jika ini mode Switch, maka tap dimanapun akan men-trigger switchCallback
           // Jika bukan, maka jalankan onTap biasa
-          onTap: isSwitch 
-              ? () => switchCallback?.call(!valueSwitch) 
-              : onTap,
+          onTap: isSwitch ? () => switchCallback?.call(!valueSwitch) : onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
@@ -68,7 +66,7 @@ class AceListTiles extends StatelessWidget {
                 ),
 
                 const SizedBox(width: 9),
-                
+
                 // Teks Judul
                 Expanded(
                   child: Text(
@@ -88,21 +86,13 @@ class AceListTiles extends StatelessWidget {
                     size: 14,
                     color: Colors.grey,
                   ),
-                
+
                 // --- WIDGET SWITCH ---
                 if (isSwitch)
                   Switch(
                     value: valueSwitch,
-                    // Warna saat aktif (ON) biar kontras dengan background Primary
-                    activeColor: Colors.white, 
                     activeTrackColor: Colors.white.withOpacity(0.5),
-                    // Warna saat mati (OFF)
-                    inactiveThumbColor: Colors.grey,
-                    inactiveTrackColor: Colors.grey[300],
-                    onChanged: (val) {
-                      // Panggil callback dengan aman
-                      switchCallback?.call(val);
-                    },
+                    onChanged: (val) => switchCallback?.call(val),
                   ),
               ],
             ),
