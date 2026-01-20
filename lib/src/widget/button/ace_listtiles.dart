@@ -74,6 +74,7 @@ class AceListTiles extends StatelessWidget {
                 // Teks Judul
                 Expanded(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (subtitle == '') ...[
                         Text(
@@ -96,7 +97,7 @@ class AceListTiles extends StatelessWidget {
                         Text(
                           subtitle,
                           style: TextStyle(
-                            fontSize: 8,
+                            fontSize: 12,
                             fontWeight: FontWeight.normal,
                             color: isActive ? Colors.white : Colors.black87,
                           ),
