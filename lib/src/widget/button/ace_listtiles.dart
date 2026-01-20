@@ -13,6 +13,7 @@ class AceListTiles extends StatelessWidget {
     this.valueSwitch = false, // Nilai true/false
     this.switchCallback, // Fungsi saat berubah
     this.activeColor = Colors.white,
+    this.subtitle = '',
   });
 
   final String title;
@@ -24,6 +25,7 @@ class AceListTiles extends StatelessWidget {
   final ValueChanged<bool>? switchCallback; // Pakai tipe data ini lebih standar
   final bool valueSwitch;
   final Color activeColor;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +73,26 @@ class AceListTiles extends StatelessWidget {
 
                 // Teks Judul
                 Expanded(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-                      color: isActive ? Colors.white : Colors.black87,
-                    ),
-                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                          color: isActive ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                          color: isActive ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                    ],
+                  )
                 ),
 
                 // Panah (Jika bukan switch & tidak aktif)
