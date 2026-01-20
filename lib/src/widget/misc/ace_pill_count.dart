@@ -20,7 +20,7 @@ class _AcePillCountState extends State<AcePillCount> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 70,
+      width: null,
       height: 30,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
