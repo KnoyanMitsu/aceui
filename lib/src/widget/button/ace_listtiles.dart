@@ -12,6 +12,7 @@ class AceListTiles extends StatelessWidget {
     this.isSwitch = false, // Mode Switch
     this.valueSwitch = false, // Nilai true/false
     this.switchCallback, // Fungsi saat berubah
+    this.activeColor = Colors.white,
   });
 
   final String title;
@@ -22,6 +23,7 @@ class AceListTiles extends StatelessWidget {
   final bool aceIcon;
   final ValueChanged<bool>? switchCallback; // Pakai tipe data ini lebih standar
   final bool valueSwitch;
+  final Color activeColor;
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +93,7 @@ class AceListTiles extends StatelessWidget {
                 if (isSwitch)
                   Switch(
                     value: valueSwitch,
+                    activeColor: activeColor,
                     activeTrackColor: Colors.white.withOpacity(0.5),
                     onChanged: (val) => switchCallback?.call(val),
                   ),
