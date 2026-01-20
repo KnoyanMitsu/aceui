@@ -94,7 +94,7 @@ class AceListTiles extends StatelessWidget {
                   Switch(
                     value: valueSwitch,
                     activeColor: activeColor,
-                    activeTrackColor: Colors.white.withOpacity(0.5),
+                    activeTrackColor: activeColor.withOpacity(0.5),
                     onChanged: (val) => switchCallback?.call(val),
                   ),
               ],
