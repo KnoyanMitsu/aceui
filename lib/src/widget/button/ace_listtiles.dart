@@ -6,7 +6,7 @@ class AceListTiles extends StatelessWidget {
     super.key,
     required this.title,
     required this.icon,
-    required this.onTap,
+    this.onTap,
     required this.isActive,
     this.aceIcon = false,
     this.isSwitch = false,
@@ -15,7 +15,7 @@ class AceListTiles extends StatelessWidget {
 
   final String title;
   final IconData icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isActive;
   final bool isSwitch;
   final bool aceIcon;
