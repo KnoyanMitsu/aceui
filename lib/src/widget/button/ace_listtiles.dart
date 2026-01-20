@@ -9,13 +9,17 @@ class AceListTiles extends StatelessWidget {
     required this.onTap,
     required this.isActive,
     this.aceIcon = false,
+    this.isSwitch = false,
+    this.switchCallback,
   });
 
   final String title;
   final IconData icon;
   final VoidCallback onTap;
   final bool isActive;
+  final bool isSwitch;
   final bool aceIcon;
+  final Function? switchCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,6 @@ class AceListTiles extends StatelessWidget {
                   child: Text(
                     title,
                     style: TextStyle(
-                      fontFamily: 'Poppins', // Sesuaikan font Anda
                       fontSize: 16,
                       fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
                       color: isActive ? Colors.white : Colors.black87,
@@ -71,12 +74,18 @@ class AceListTiles extends StatelessWidget {
                   ),
                 ),
 
-                // 3. (Opsional) Indikator panah kecil di kanan
-                if (!isActive)
+                if (!isActive && !isSwitch)
                   const Icon(
                     Icons.arrow_forward_ios,
                     size: 14,
                     color: Colors.grey,
+                  ),
+                if (isSwitch)
+                  Switch(
+                    value: isActive,
+                    onChanged: (value) {
+                      switchCallback!(value);
+                    },
                   ),
               ],
             ),
