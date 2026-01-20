@@ -10,6 +10,7 @@ class AceListTiles extends StatelessWidget {
     required this.isActive,
     this.aceIcon = false,
     this.isSwitch = false,
+    this.valueSwitch = false,
     this.switchCallback,
   });
 
@@ -19,7 +20,8 @@ class AceListTiles extends StatelessWidget {
   final bool isActive;
   final bool isSwitch;
   final bool aceIcon;
-  final Function? switchCallback;
+  final Function(bool)? switchCallback;
+  final bool valueSwitch;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class AceListTiles extends StatelessWidget {
                   ),
                 if (isSwitch)
                   Switch(
-                    value: isActive,
+                    value: valueSwitch,
                     onChanged: (value) {
                       switchCallback!(value);
                     },
