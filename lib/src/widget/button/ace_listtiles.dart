@@ -75,22 +75,33 @@ class AceListTiles extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-                          color: isActive ? Colors.white : Colors.black87,
+                      if (subtitle == '') ...[
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                            color: isActive ? Colors.white : Colors.black87,
+                          ),
                         ),
-                      ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-                          color: isActive ? Colors.white : Colors.black87,
+                      ] else ...[
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                            color: isActive ? Colors.white : Colors.black87,
+                          ),
                         ),
-                      ),
+                        Text(
+                          subtitle,
+                          style: TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.normal,
+                            color: isActive ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                      ],
                     ],
                   )
                 ),
